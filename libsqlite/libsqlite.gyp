@@ -36,11 +36,8 @@
 							'SQLITE_ENABLE_FTS5',
 							'SQLITE_ENABLE_RTREE',
 							'SQLITE_ENABLE_JSON1',
-# 2023.07.11 mdw the next defines added : see https://www.sqlite.org/compile.html
-							'SQLITE_OMIT_DEPRECATED',
-							'SQLITE_DEFAULT_MEMSTATUS=0',						
-							'SQLITE_DEFAULT_WAL_SYNCHRONOUS=1',						
 						],
+						
 						'sources':
 						[
 							'include/sqlite3.h',

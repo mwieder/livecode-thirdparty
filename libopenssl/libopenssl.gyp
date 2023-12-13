@@ -236,6 +236,49 @@
 							},
 						},
 					},
+
+		{
+			'target_name': 'external-revsecurity-server',
+			'type': 'loadable_module',
+			'product_prefix': '',
+			'product_name': 'server-revsecurity',
+			
+			'dependencies':
+			[
+							'../../prebuilt/libopenssl.gyp:libopenssl',
+			],
+			
+						'sources':
+						[
+							'../../engine/src/dummy.cpp',
+						],
+			
+						'conditions':
+						[
+							[
+								'OS == "android"',
+								{
+									'product_name': 'RevSecurity',
+									'product_extension': '',
+
+									'ldflags!':
+									[
+										'-flto',
+									],
+								},
+							],
+						],
+			
+			'all_dependent_settings':
+			{
+				'variables':
+				{
+					'dist_files': [ '<(PRODUCT_DIR)/<(_product_name)>(lib_suffix)' ],
+				},
+			},
+		},
+
+
 				],
 			},
 		],
