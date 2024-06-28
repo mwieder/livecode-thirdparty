@@ -460,7 +460,8 @@ int poptConfigFileToString(FILE *fp, /*@out@*/ char ** argstrp, int flags)
  * @return		error string
  */
 /*@observer@*/
-const char *const poptStrerror(const int error)
+// const char *const poptStrerror(const int error)
+char *const poptStrerror(const int error)
 	/*@*/;
 
 /** \ingroup popt

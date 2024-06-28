@@ -58,12 +58,12 @@ struct _GtkStatusIconClass
   gboolean (* size_changed) (GtkStatusIcon *status_icon,
 			     gint           size);
 
-  void (*__gtk_reserved1);
-  void (*__gtk_reserved2);
-  void (*__gtk_reserved3);
-  void (*__gtk_reserved4);
-  void (*__gtk_reserved5);
-  void (*__gtk_reserved6);  
+  void *__gtk_reserved1;
+  void *__gtk_reserved2;
+  void *__gtk_reserved3;
+  void *__gtk_reserved4;
+  void *__gtk_reserved5;
+  void *__gtk_reserved6;  
 };
 
 GType                 gtk_status_icon_get_type           (void) G_GNUC_CONST;
