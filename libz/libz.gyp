@@ -28,14 +28,14 @@
 						
 						'include_dirs':
 						[
-							'include',
+#							'include',
 							'src',
 						],
 						
 						'sources':
 						[
-							'include/zconf.h',
-							'include/zlib.h',
+							'src/zconf.h',
+							'src/zlib.h',
 							
 							'src/crc32.h',
 							'src/deflate.h',

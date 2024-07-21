@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mwieder/livecode/thirdparty/libpng/src/png.h
+pnglibconf.h
+/home/mwieder/livecode/thirdparty/libpng/src/pnglibconf.h
+pngconf.h
+/home/mwieder/livecode/thirdparty/libpng/src/pngconf.h
+
+/home/mwieder/livecode/thirdparty/libpng/src/pngconf.h
+limits.h
+-
+stddef.h
+-
+stdio.h
+-
+setjmp.h
+-
+time.h
+-
+
+/home/mwieder/livecode/thirdparty/libpng/src/pnglibconf.h
+
+/home/mwieder/livecode/thirdparty/libpng/src/pngtest.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+png.h
+/home/mwieder/livecode/thirdparty/libpng/src/png.h
+zlib.h
+/home/mwieder/livecode/thirdparty/libpng/src/zlib.h
+time.h
+-
+

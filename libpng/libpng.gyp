@@ -36,12 +36,19 @@
 						
 						'sources':
 						[
-							'include/png.h',
-							'include/pngconf.h',
-							'include/pngdebug.h',
-							'include/pnginfo.h',
-							'include/pnglibconf.h',
-							'include/pngstruct.h',
+#							'include/png.h',
+#							'include/pngconf.h',
+#							'include/pngdebug.h',
+#							'include/pnginfo.h',
+#							'include/pnglibconf.h',
+#							'include/pngstruct.h',
+
+							'src/png.h',
+							'src/pngconf.h',
+							'src/pngdebug.h',
+							'src/pnginfo.h',
+							'src/pnglibconf.h',
+							'src/pngstruct.h',
 							
 							'src/pngpriv.h',
 							'src/png.c',
