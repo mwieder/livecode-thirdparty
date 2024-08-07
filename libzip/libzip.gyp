@@ -28,27 +28,29 @@
 							'silence_warnings': 1,
 						},
 						
+						'defines':
+						[
+#							'HAVE_CRYPTO',
+#							'HAVE_OPENSSL',
+#							'HAVE_SECURE_RANDOM',
+						],
+						
 						'include_dirs':
 						[
-#							'include',
 							'src',
 						],
 						
 						'sources':
 						[
 							'src/compat.h',
-							'src/zip.h',
+							'src/config.h',
+#							'src/zip.h',
 							
 							'src/zipconf.h',
 							'src/zip_crypto.h',
 							'src/zipint.h',
-							'src/zipintw32.h',
-							
-							'src/w32support.cpp',
 							
 							'src/mkstemp.c',
-							'src/zip_add.c',
-							'src/zip_add_dir.c',
 							'src/zip_add_entry.c',
 							'src/zip_algorithm_bzip2.c',
 							'src/zip_algorithm_deflate.c',
@@ -60,8 +62,7 @@
 							#'src/zip_crypto_commoncrypto.c',
 							#'src/zip_crypto_gnutls.c',
 							#'src/zip_crypto_mbedtls.c',
-							'src/zip_crypto_openssl.c',
-							#'src/zip_crypto_win.c',
+							#'src/zip_crypto_openssl.c',
 
 							'src/zip_delete.c',
 							'src/zip_dir_add.c',
@@ -73,17 +74,13 @@
 							'src/zip_err_str.c',
 							'src/zip_error.c',
 							'src/zip_error_clear.c',
-							'src/zip_error_get.c',
-							'src/zip_error_get_sys_type.c',
 							'src/zip_error_strerror.c',
-							'src/zip_error_to_str.c',
 							'src/zip_extra_field.c',
 							'src/zip_extra_field_api.c',
 							'src/zip_fclose.c',
 							'src/zip_fdopen.c',
 							'src/zip_file_add.c',
 							'src/zip_file_error_clear.c',
-							'src/zip_file_error_get.c',
 							'src/zip_file_get_comment.c',
 							'src/zip_file_get_external_attributes.c',
 							'src/zip_file_get_offset.c',
@@ -105,10 +102,8 @@
 							'src/zip_get_archive_comment.c',
 							'src/zip_get_archive_flag.c',
 							'src/zip_get_encryption_implementation.c',
-							'src/zip_get_file_comment.c',
 							'src/zip_get_name.c',
 							'src/zip_get_num_entries.c',
-							'src/zip_get_num_files.c',
 							'src/zip_hash.c',
 							'src/zip_io_util.c',
 							'src/zip_libzip_version.c',
@@ -119,17 +114,12 @@
 							'src/zip_pkware.c',
 							'src/zip_progress.c',
 							'src/zip_random_unix.c',
-							'src/zip_random_uwp.c',
 #							'src/zip_recompress.c',
-							'src/zip_rename.c',
-							'src/zip_replace.c',
 							'src/zip_set_archive_comment.c',
 							'src/zip_set_archive_flag.c',
 							'src/zip_set_default_password.c',
-							'src/zip_set_file_comment.c',
 							'src/zip_set_file_compression.c',
 							'src/zip_set_name.c',
-#							'src/zip_set_progress_callback.c',
 							'src/zip_source_accept_empty.c',
 							'src/zip_source_begin_write.c',
 							'src/zip_source_begin_write_cloning.c',
@@ -181,6 +171,25 @@
 							'src/zip_unchange_archive.c',
 							'src/zip_unchange_data.c',
 							'src/zip_utf-8.c',
+
+							'src/nonrandomopen.c',
+# DEPRECRATED but revzip uses them
+							'src/zip_add_dir.c',
+							'src/zip_rename.c',
+							'src/zip_replace.c',
+							'src/zip_set_file_comment.c',
+							'src/zip_error_get_sys_type.c',
+							'src/zip_error_get.c',
+							'src/zip_error_to_str.c',
+							'src/zip_file_error_get.c',
+							'src/zip_source_zip.c',
+							'src/zip_get_file_comment.c',
+							'src/zip_get_num_files.c',
+							'src/zip_add.c',
+# NOT USED
+#							'src/zip_set_progress_callback.c',
+#							'src/zipcmp.c',
+#							'src/ziptool.c',
 						],
 						
 						'conditions':
@@ -188,15 +197,12 @@
 							[
 								'OS == "win"',
 								{
-#									'defines':
-#									[
-#										# libmysql doesn't expect Win32 to supply struct timespec
-#										'_CRT_NO_TIME_T',
-#										'time_t=__time32_t',
-#									],
-									
 									'sources/':
 									[
+										'src/zipintw32.h',
+										'src/w32support.cpp',
+										'src/zip_random_uwp.c',
+										'src/zip_crypto_win.c',
 										'src/zip_random_win32.c',
 										'src/zip_source_file_win32.c',
 										'src/zip_source_file_win32_ansi.c',
