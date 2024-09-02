@@ -43,11 +43,14 @@
 						'sources':
 						[
 							'src/compat.h',
-							'src/config.h',
-#							'src/zip.h',
+							#'src/config.h',
+							'src/zip.h',
 							
 							'src/zipconf.h',
 							'src/zip_crypto.h',
+							'src/zip_commoncrypto.h',
+							'src/zip_crypto_gnutls.h',
+							'src/zip_crypto_openssl.h',
 							'src/zipint.h',
 							
 							'src/mkstemp.c',
@@ -173,7 +176,7 @@
 							'src/zip_utf-8.c',
 
 							'src/nonrandomopen.c',
-# DEPRECRATED but revzip uses them
+# DEPRECATED but revzip uses them
 							'src/zip_add_dir.c',
 							'src/zip_rename.c',
 							'src/zip_replace.c',
