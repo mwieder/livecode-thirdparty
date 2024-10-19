@@ -265,6 +265,7 @@
 					},
 				],
 				[
+					# 32-bit linux build
 					'(toolset_os == "linux" or toolset_os == "android") and toolset_arch == "x86"',
 					{
 						'platform_include_dirs':
@@ -280,6 +281,7 @@
 					},
 				],
 				[
+					# 64-bit linux or android build
 					'(toolset_os == "linux" or toolset_os == "android") and toolset_arch == "x86_64"',
 					{
 						'platform_include_dirs':
@@ -295,6 +297,7 @@
 					},
 				],
 				[
+					# 32-bit linux or android build for arm processor
 					'toolset_os in ("linux", "android") and toolset_arch in ("armv6", "armv6hf", "armv7")',
 					{
 						'platform_include_dirs':
@@ -324,7 +327,8 @@
 					},
 				],
 				[
-					'toolset_os in ("linux", "android") and toolset_arch == "arm64"',
+					# 64-bit linux or android build for arm processor
+					'toolset_os in ("linux", "android") and toolset_arch in "arm64"',
 					{
 						'platform_include_dirs':
 						[
