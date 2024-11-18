@@ -28,14 +28,14 @@
 						
 						'include_dirs':
 						[
-							'include',
+#							'include',
 							'src',
 						],
 						
 						'sources':
 						[
-							'include/zconf.h',
-							'include/zlib.h',
+							'src/zconf.h',
+							'src/zlib.h',
 							
 							'src/crc32.h',
 							'src/deflate.h',
@@ -66,10 +66,10 @@
 						
 						'direct_dependent_settings':
 						{
-							'include_dirs':
-							[
-								'include',
-							],
+#							'include_dirs':
+#							[
+#								'include',
+#							],
 						},
 						
 						'target_conditions':

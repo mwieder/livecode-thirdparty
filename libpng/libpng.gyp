@@ -30,18 +30,19 @@
 						
 						'include_dirs':
 						[
-							'include',
+#							'include',
 							'src',
 						],
 						
 						'sources':
 						[
-							'include/png.h',
-							'include/pngconf.h',
-							'include/pngdebug.h',
-							'include/pnginfo.h',
-							'include/pnglibconf.h',
-							'include/pngstruct.h',
+							'src/png.h',
+							'src/pngconf.h',
+							'src/pngdebug.h',
+							'src/pnginfo.h',
+							'src/pnglibconf.h',
+#							'src/pngpriv.h',
+							'src/pngstruct.h',
 							
 							'src/pngpriv.h',
 							'src/png.c',
@@ -61,17 +62,17 @@
 							'src/pngwutil.c',
 						],
 						
-						'direct_dependent_settings':
-						{
-							'include_dirs':
-							[
-								'include',
-							],
-						},
+#						'direct_dependent_settings':
+#						{
+#							'include_dirs':
+#							[
+#								'include',
+#							],
+#						},
 						
                         'defines':
                         [
-                            'PNG_ARM_NEON_OPT=0',
+							'PNG_ARM_NEON_OPT=0',
                         ],
 					},
 					{
