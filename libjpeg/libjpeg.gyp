@@ -3,26 +3,26 @@
 	[
 		'../../common.gypi',
 	],
-	
+
 	'targets':
 	[
 		{
 			'target_name': 'libjpeg',
 
 			'toolsets': ['host', 'target'],
-			
+
 			'conditions':
 			[
 				[
 					'use_system_libjpeg == 0',
 					{
 						'type': 'static_library',
-						
+
 						'variables':
 						{
 							'silence_warnings': 1,
 						},
-						
+
 						'defines':
 						[
 							'HAVE_STDLIB_H',
@@ -32,27 +32,41 @@
 						[
 							'src',
 						],
-						
+
 						'sources':
 						[
 							'src/cderror.h',
 							'src/cdjpeg.h',
-							'src/jchuff.h',
 							#'src/jconfig.h',
-							'src/jdct.h',
-							'src/jdhuff.h',
+							#'src/jdct.h',
 							'src/jerror.h',
-							'src/jinclude.h',
-							'src/jmemsys.h',
-							'src/jmorecfg.h',
-							'src/jpegint.h',
+							#'src/jinclude.h',
+							#'src/jmemsys.h',
+							#'src/jmorecfg.h',
+							#'src/jpegint.h',
 							'src/jpeglib.h',
-							'src/jversion.h',
-							'src/transupp.h',
-							
-							'src/ansi2knr.c',
+							#'src/jversion.h',
+							#'src/transupp.h',
+
+# these files needed if getting source from sourceforge (v6b)
+#							'src/jchuff.h',
+#							'src/jdhuff.h',
+#							'src/ansi2knr.c',
+#							'src/jcphuff.c',
+#							'src/jdphuff.c',
+#							'src/jidctred.c',
+#
+# these files needed if getting source from ijg.org (v9f)
+							'src/jaricom.c',
+							'src/jcarith.c',
+							'src/jdarith.c',
+# not in 9f
+#							'src/cjpegalt.c',
+#							'src/djpegalt.c',
+#
 							'src/cdjpeg.c',
 							'src/cjpeg.c',
+							'src/ckconfig.c',
 							'src/djpeg.c',
 							'src/jcapimin.c',
 
@@ -67,7 +81,6 @@
 							'src/jcmaster.c',
 							'src/jcomapi.c',
 							'src/jcparam.c',
-							'src/jcphuff.c',
 							'src/jcprepct.c',
 							'src/jcsample.c',
 
@@ -87,7 +100,6 @@
 							'src/jdmaster.c',
 							'src/jdmerge.c',
 
-							'src/jdphuff.c',
 							'src/jdpostct.c',
 							'src/jdsample.c',
 							'src/jdtrans.c',
@@ -99,7 +111,6 @@
 							'src/jidctflt.c',
 							'src/jidctfst.c',
 							'src/jidctint.c',
-							'src/jidctred.c',
 							'src/jmemansi.c',
 
 							'src/jmemmgr.c',
@@ -108,27 +119,28 @@
 							'src/jpegtran.c',
 							'src/jquant1.c',
 							'src/jquant2.c',
-
 							'src/jutils.c',
+
+# image reading files
 							'src/rdbmp.c',
 							'src/rdcolmap.c',
 							'src/rdgif.c',
-							'src/rdjpgcom.c',
+							#'src/rdjpgcom.c',
 							'src/rdppm.c',
 							'src/rdrle.c',
-
 							'src/rdswitch.c',
 							'src/rdtarga.c',
+
 							'src/transupp.c',
+# image writing files
 							'src/wrbmp.c',
 							'src/wrgif.c',
-							'src/wrjpgcom.c',
+							#'src/wrjpgcom.c',
 							'src/wrppm.c',
-
 							'src/wrrle.c',
 							'src/wrtarga.c',
 						],
-						
+
 						'conditions':
 						[
 							[
@@ -138,7 +150,7 @@
 									[
 										'USE_MSDOS_MEMMGR',
 									],
-									
+
 									'sources/':
 									[
 										'src/jmemdos.c',
@@ -152,7 +164,7 @@
 									[
 										'USE_MAC_MEMMGR',
 									],
-									
+
 									'sources/':
 									[
 										'src/jmemmac.c',
@@ -161,17 +173,17 @@
 							],
 						],
 
-						'direct_dependent_settings':
-						{
-							'include_dirs':
-							[
-								'include',
-							],
-						},
+#						'direct_dependent_settings':
+#						{
+#							'include_dirs':
+#							[
+#								'include',
+#							],
+#						},
 					},
 					{
 						'type': 'none',
-						
+
 						'link_settings':
 						{
 							'libraries':
