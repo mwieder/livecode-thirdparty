@@ -3,20 +3,20 @@
 	[
 		'../../common.gypi',
 	],
-	
+
 	'variables':
 	{
 		'libffi_public_headers_darwin_osx_dir':
 		[
 			'./include_darwin'
 		],
-		
+
 		'libffi_public_headers_darwin_ios_dir':
 		[
 			'./git_master/darwin_ios/include',
 			'./git_master/darwin_common/include',
 		],
-		
+
 		'libffi_public_headers_win32_dir':
 		[
 			'./include_win32',
@@ -26,12 +26,12 @@
 		[
 			'./include_win64',
 		],
-		
+
 		'libffi_public_headers_linux_x86_dir':
 		[
 			'./include_linux/x86',
 		],
-		
+
 		'libffi_public_headers_linux_x86_64_dir':
 		[
 			'./include_linux/x86_64',
@@ -41,7 +41,17 @@
 		[
 			'./include_linux/arm64',
 		],
-		
+
+		'libffi_public_headers_linux_armv6hf_dir':
+		[
+			'./include_linux/arm64',
+		],
+
+		'libffi_public_headers_linux_armv6_dir':
+		[
+			'./include_linux/arm64',
+		],
+
 		'libffi_public_headers_android_dir':
 		[
 			'./include_android',
@@ -56,7 +66,7 @@
 			'src/raw_api.c',
 			'src/types.c',
 		],
-		
+
 		'libffi_mac_source_files':
 		[
 			'src/x86/darwin.S',
@@ -65,7 +75,7 @@
 			'src/x86/ffi64.c',
 			'src/x86/win32.S',
 		],
-		
+
 		'libffi_ios_source_files':
 		[
 			'git_master/darwin_ios/src/aarch64/ffi_arm64.c',
@@ -88,7 +98,7 @@
 			'git_master/src/raw_api.c',
 			'git_master/src/types.c',
 		],
-		
+
 		'libffi_win32_source_files':
 		[
 			'src/x86/ffi.c',
@@ -101,7 +111,7 @@
 			'src/x86/ffi64.c',
 			'src/x86/win64.asm',
 		],
-		
+
 		'libffi_linux_x86_source_files':
 		[
 			'src/x86/ffi.c',
@@ -123,24 +133,31 @@
 			'src/arm/trampoline.S',
 		],
 
+		'libffi_linux_armv6hf_source_files':
+		[
+			'src/arm/ffi.c',
+			'src/arm/sysv.S',
+			'src/arm/trampoline.S',
+		],
+
 		'libffi_linux_arm64_source_files':
 		[
 			'src/aarch64/ffi.c',
 			'src/aarch64/sysv.S',
 		],
 	},
-	
+
 	'targets':
 	[
 		{
 			'target_name': 'libffi',
 			'type': 'static_library',
-			
+
 			'toolsets': ['host','target'],
-			
+
 			'product_prefix': '',
 			'product_name': 'libffi',
-			
+
 			'variables':
 			{
 				'conditions':
@@ -160,16 +177,16 @@
 
 				'silence_warnings': 1,
 			},
-			
+
 			'sources':
 			[
 			],
-			
+
 			'include_dirs':
 			[
 				'<@(_platform_include_dirs)',
 			],
-			
+
 			'direct_dependent_settings':
 			{
 				'include_dirs':
@@ -183,7 +200,7 @@
 					'FFI_BUILDING',
 				],
 			},
-			
+
 			'all_dependent_settings':
 			{
 				'msvs_settings':
@@ -196,7 +213,7 @@
 					},
 				},
 			},
-			
+
 			'conditions':
 			[
 				[
@@ -206,7 +223,7 @@
 						[
 							'<@(libffi_public_headers_darwin_osx_dir)',
 						],
-						
+
 						'sources':
 						[
 							'<@(libffi_mac_source_files)',
@@ -221,7 +238,7 @@
 						[
 							'<@(libffi_public_headers_darwin_ios_dir)',
 						],
-						
+
 						'sources':
 						[
 							'<@(libffi_ios_source_files)',
@@ -241,7 +258,7 @@
 						[
 							'<@(libffi_public_headers_win32_dir)',
 						],
-						
+
 						'sources':
 						[
 							'<@(libffi_win32_source_files)',
@@ -256,7 +273,7 @@
 						[
 							'<@(libffi_public_headers_win64_dir)',
 						],
-						
+
 						'sources':
 						[
 							'<@(libffi_win64_source_files)',
@@ -272,7 +289,7 @@
 						[
 							'<@(libffi_public_headers_linux_x86_dir)',
 						],
-						
+
 						'sources':
 						[
 							'<@(libffi_linux_x86_source_files)',
@@ -288,7 +305,7 @@
 						[
 							'<@(libffi_public_headers_linux_x86_64_dir)',
 						],
-						
+
 						'sources':
 						[
 							'<@(libffi_linux_x86_source_files)',
@@ -304,13 +321,13 @@
 						[
 							'<@(libffi_public_headers_android_dir)',
 						],
-						
+
 						'sources':
 						[
 							'<@(libffi_linux_arm_source_files)',
 							'<@(libffi_generic_sources)'
 						],
-						
+
 						# Disable VFP for non-hard-float targets
                         'conditions':
                         [
@@ -358,7 +375,7 @@
 					},
 				],
 			],
-			
+
 			'target_conditions':
 			[
 				[
