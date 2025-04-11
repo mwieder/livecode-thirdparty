@@ -3,7 +3,7 @@
 	[
 		'../../common.gypi',
 	],
-	
+
 	'variables':
 	{
 		'skia_include_dirs':
@@ -45,27 +45,28 @@
 			'src/views',
 			'src/xml',
 			'src/xps',
+			'../libjpeg/src',
 		],
 
 		'skia_defines':
 		[
 			# Disable Skia debugging
 			'SK_RELEASE',
-			
+
 			# Don't try to link against libetc1 for ETC1 texture compression support
 			'SK_IGNORE_ETC1_SUPPORT',
-			
+
 			# Some Skia source files need this to build
 			# TODO: see if those files can be removed from the build
 			'SK_SUPPORT_LEGACY_IMAGE_ENCODER_CLASS',
-			
+
 			# We use deprecated Skia features
 			'SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT',
 			'SK_SUPPORT_LEGACY_GETTOPDEVICE',
 			'SK_SUPPORT_LEGACY_ACCESSBITMAP',
 			'SK_SUPPORT_LEGACY_CLIP_REGIONOPS',
 			'SK_SUPPORT_LEGACY_GETDEVICE',
-            
+
             # Disable GPU support
             'SK_SUPPORT_GPU=0',
 		],
@@ -83,7 +84,7 @@
 			"src/opts/SkBlitMask_opts_arm.cpp",
 			"src/opts/SkBlitRow_opts_arm.cpp",
         ],
-        
+
 		'opts_armv7_arm64_srcs':
 		[
 			"src/opts/SkBitmapProcState_arm_neon.cpp",
@@ -105,7 +106,7 @@
 		],
 
 		'opts_sse3_srcs':
-		[ 
+		[
 			"src/opts/SkBitmapProcState_opts_SSSE3.cpp",
   			"src/opts/SkOpts_ssse3.cpp",
   		],
@@ -278,7 +279,7 @@
 			[
 				'<@(skia_defines)',
 			],
-			
+
 			'variables':
 			{
 				'silence_warnings': 1,
@@ -298,7 +299,7 @@
 						[
 							'<@(opts_sse2_srcs)',
 						],
-                        
+
                         'target_conditions':
                         [
                             [
@@ -357,7 +358,7 @@
 						[
 							'<@(opts_sse3_srcs)',
 						],
-                        
+
                         'target_conditions':
                         [
                             [
@@ -396,7 +397,7 @@
 			[
 				'<@(skia_defines)',
 			],
-			
+
 			'variables':
 			{
 				'silence_warnings': 1,
@@ -416,7 +417,7 @@
 						[
 							'<@(opts_sse41_srcs)',
 						],
-                        
+
                         'target_conditions':
                         [
                             [
@@ -456,7 +457,7 @@
 			[
 				'<@(skia_defines)',
 			],
-			
+
 			'variables':
 			{
 				'silence_warnings': 1,
@@ -476,7 +477,7 @@
 						[
 							'<@(opts_sse42_srcs)',
 						],
-                        
+
                         'target_conditions':
                         [
                             [
@@ -535,7 +536,7 @@
 						[
 							'<@(opts_avx_srcs)',
 						],
-                        
+
                         'target_conditions':
                         [
                             [
@@ -574,7 +575,7 @@
 			[
 				'<@(skia_defines)',
 			],
-			
+
 			'variables':
 			{
 				'silence_warnings': 1,
@@ -594,7 +595,7 @@
 						[
 							'<@(opts_hsw_srcs)',
 						],
-                        
+
                         'target_conditions':
                         [
                             [
@@ -625,14 +626,14 @@
 		{
 			'target_name': 'libskia',
 			'type': 'static_library',
-			
+
 			'toolsets': ['host', 'target'],
 
 			'variables':
 			{
 				'silence_warnings': 1,
 			},
-			
+
 			'dependencies':
 			[
 				'../libgif/libgif.gyp:libgif',
@@ -650,19 +651,19 @@
 				'libskia_opt_avx',
 				'libskia_opt_hsw',
 			],
-			
+
 			'include_dirs':
 			[
 				'<@(skia_include_dirs)',
 			],
-			
+
 			'sources':
 			[
                 #'src/android/SkBitmapRegionCodec.h',
                 #'src/android/SkBitmapRegionDecoderPriv.h',
                 #'src/android/SkBitmapRegionCodec.cpp',
                 #'src/android/SkBitmapRegionDecoder.cpp',
-				
+
 				'src/animator/SkADrawable.h',
 				'src/animator/SkAnimate.h',
 				'src/animator/SkAnimateActive.h',
@@ -810,12 +811,12 @@
 				'src/animator/SkTextToPath.cpp',
 				'src/animator/SkTypedArray.cpp',
 				'src/animator/SkXMLAnimatorWriter.cpp',
-				
+
 				'src/c/sk_c_from_to.h',
 				'src/c/sk_types_priv.h',
 				'src/c/sk_paint.cpp',
 				'src/c/sk_surface.cpp',
-				
+
 				'src/codec/SkBmpCodec.h',
 				'src/codec/SkBmpMaskCodec.h',
 				'src/codec/SkBmpRLECodec.h',
@@ -862,7 +863,7 @@
                 'src/codec/SkWbmpCodec.cpp',
                 'src/codec/SkWebpAdapterCodec.cpp',
                 'src/codec/SkWebpCodec.cpp',
-				
+
 				'src/core/Sk4px.h',
 				'src/core/Sk4x4f.h',
 				'src/core/SkAAClip.h',
@@ -1258,7 +1259,7 @@
 				'src/core/SkXfermodeF16.cpp',
 				'src/core/SkXfermodeInterpretation.cpp',
 				'src/core/SkYUVPlanesCache.cpp',
-				
+
 				'src/effects/SkArithmeticModePriv.h',
 				'src/effects/SkBlurMask.h',
 				'src/effects/SkEmbossMask.h',
@@ -1308,7 +1309,7 @@
 				'src/effects/SkTableMaskFilter.cpp',
 				'src/effects/SkTileImageFilter.cpp',
 				'src/effects/SkXfermodeImageFilter.cpp',
-				
+
 				'src/effects/gradients/Sk4fGradientBase.h',
 				'src/effects/gradients/Sk4fGradientPriv.h',
 				'src/effects/gradients/Sk4fLinearGradient.h',
@@ -1328,7 +1329,7 @@
 				'src/effects/gradients/SkRadialGradient.cpp',
 				'src/effects/gradients/SkSweepGradient.cpp',
 				'src/effects/gradients/SkTwoPointConicalGradient.cpp',
-				
+
 				'src/fonts/SkGScalerContext.h',
 				'src/fonts/SkRandomScalerContext.h',
 				'src/fonts/SkTestScalerContext.h',
@@ -1337,8 +1338,8 @@
 				'src/fonts/SkRandomScalerContext.cpp',
 				'src/fonts/SkRemotableFontMgr.cpp',
 				'src/fonts/SkTestScalerContext.cpp',
-            
-				
+
+
 				'src/image/SkImage_Base.h',
 				'src/image/SkImageShader.h',
 				'src/image/SkImageShaderContext.h',
@@ -1350,7 +1351,7 @@
 				'src/image/SkImageShader.cpp',
 				'src/image/SkSurface.cpp',
 				'src/image/SkSurface_Raster.cpp',
-				
+
 				'src/images/transform_scanline.h',
 				'src/images/SkImageEncoderPriv.h',
 				'src/images/SkJPEGWriteUtility.h',
@@ -1360,10 +1361,10 @@
 				'src/images/SkKTXImageEncoder.cpp',
 				'src/images/SkPNGImageEncoder.cpp',
 				'src/images/SkWEBPImageEncoder.cpp',
-				
+
 				'src/lazy/SkDiscardableMemoryPool.h',
 				'src/lazy/SkDiscardableMemoryPool.cpp',
-				
+
 				'src/opts/Sk4px_NEON.h',
 				'src/opts/Sk4px_none.h',
 				'src/opts/Sk4px_SSE2.h',
@@ -1390,7 +1391,7 @@
 				'src/opts/SkSwizzler_opts.h',
 				'src/opts/SkTextureCompressor_opts.h',
 				'src/opts/SkXfermode_opts.h',
-				
+
 				'src/pathops/SkAddIntersections.h',
 				'src/pathops/SkIntersectionHelper.h',
 				'src/pathops/SkIntersections.h',
@@ -1447,7 +1448,7 @@
 				'src/pathops/SkPathOpsWinding.cpp',
 				'src/pathops/SkPathWriter.cpp',
 				'src/pathops/SkReduceOrder.cpp',
-				
+
 				'src/pdf/SkBitmapKey.h',
 				'src/pdf/SkDeflate.h',
 				'src/pdf/SkJpegInfo.h',
@@ -1485,13 +1486,13 @@
 				'src/pdf/SkPDFShader.cpp',
 				'src/pdf/SkPDFTypes.cpp',
 				'src/pdf/SkPDFUtils.cpp',
-				
+
 				'src/pipe/SkPipeCanvas.h',
 				'src/pipe/SkPipeFormat.h',
 				'src/pipe/SkRefSet.h',
 				'src/pipe/SkPipeCanvas.cpp',
 				'src/pipe/SkPipeReader.cpp',
-				
+
 				'src/ports/SkFontConfigInterface_direct.h',
 				'src/ports/SkFontConfigTypeface.h',
 				'src/ports/SkFontHost_FreeType_common.h',
@@ -1547,7 +1548,7 @@
 				'src/ports/SkTLS_pthread.cpp',
 				'src/ports/SkTLS_win.cpp',
 				'src/ports/SkTypeface_win_dw.cpp',
-				
+
 				'src/sfnt/SkIBMFamilyClass.h',
 				'src/sfnt/SkOTTable_EBDT.h',
 				'src/sfnt/SkOTTable_EBLC.h',
@@ -1576,11 +1577,11 @@
 				'src/sfnt/SkTTCFHeader.h',
 				'src/sfnt/SkOTTable_name.cpp',
 				'src/sfnt/SkOTUtils.cpp',
-								
+
 				'src/svg/SkSVGDevice.h',
 				'src/svg/SkSVGCanvas.cpp',
 				'src/svg/SkSVGDevice.cpp',
-				
+
 				'src/utils/SkBase64.h',
 				'src/utils/SkBitmapSourceDeserializer.h',
 				'src/utils/SkBitSet.h',
@@ -1646,10 +1647,10 @@
 				'src/utils/SkThreadUtils_pthread.cpp',
 				'src/utils/SkThreadUtils_win.cpp',
 				'src/utils/SkWhitelistTypefaces.cpp',
-				
+
 				'src/utils/mac/SkCreateCGImageRef.cpp',
 				'src/utils/mac/SkStream_mac.cpp',
-				
+
 				'src/utils/win/SkAutoCoInitialize.h',
 				'src/utils/win/SkDWrite.h',
 				'src/utils/win/SkDWriteFontFileStream.h',
@@ -1665,53 +1666,53 @@
 				'src/utils/win/SkHRESULT.cpp',
 				'src/utils/win/SkIStream.cpp',
 				'src/utils/win/SkWGL_win.cpp',
-				
+
 				# TODO: views subdirectory
-				
+
 				'src/xml/SkDOM.cpp',
 				'src/xml/SkXMLParser.cpp',
 				'src/xml/SkXMLWriter.cpp',
-				
+
 				'src/xps/SkXPSDevice.h',
 				'src/xps/SkDocument_XPS.cpp',
 				'src/xps/SkDocument_XPS_None.cpp',
 				'src/xps/SkXPSDevice.cpp',
 			],
-			
+
 			'defines':
 			[
 				'<@(skia_defines)',
 			],
-			
+
 			'all_dependent_settings':
 			{
 				'defines':
 				[
 					# Disable Skia debugging
 					'SK_RELEASE',
-				
+
 					# We use deprecated Skia features
 					'SK_SUPPORT_LEGACY_CANVAS_IS_REFCNT',
 					'SK_SUPPORT_LEGACY_GETTOPDEVICE',
 					'SK_SUPPORT_LEGACY_ACCESSBITMAP',
 					'SK_SUPPORT_LEGACY_CLIP_REGIONOPS',
 					'SK_SUPPORT_LEGACY_GETDEVICE',
-                    
+
                     # Disable GPU support
                     'SK_SUPPORT_GPU=0',
 				],
 			},
-			
+
 			'sources!':
 			[
 				# Not relevant to the plaforms we support
 				'src/ports/SkMemory_mozalloc.cpp',
-				
+
 				# Don't build the LUA bindings
 				'src/utils/SkLua.cpp',
 				'src/utils/SkLuaCanvas.cpp',
 			],
-			
+
 			'sources/':
 			[
 				# Disable all image codecs (we don't use Skia for image encode/decode)
@@ -1719,14 +1720,14 @@
 				['exclude', '(W|w)(E|e)(B|b)(P|p)'],
 				['exclude', '^src/codec/.*Codec.*\\.cpp$'],
 				['include', '^src/codec/SkCodec(ImageGenerator)?\\.cpp$'],
-				
+
 				# Disable unused and unsupported animator
 				['exclude', 'src/animator/*'],
 
-				# Don't build XPS 
+				# Don't build XPS
 				['exclude', '/xps/'],
 			],
-			
+
 			'conditions':
 			[
 				[
@@ -1749,23 +1750,23 @@
 						[
 							'src/utils/win',
 						],
-						
+
 						'sources!':
 						[
 							# Disable generic files where Win32-specific support is available
 							'src/ports/SkImageEncoder_none.cpp',
 							'src/ports/SkImageGenerator_none.cpp',
 							'src/ports/SkTLS_none.cpp',
-							
+
 							# Use DirectWrite instead of GDI
 							'src/ports/SkFontMgr_win_gdi_factory.cpp',
 						],
-						
+
 						'sources/':
 						[
 							# Disable POSIX features
 							['exclude', '(pthread|posix)\\.cpp$'],
-							
+
 							# Don't build FreeType or FontConfig code
 							['exclude', 'freetype'],
 							['exclude', 'FreeType'],
@@ -1773,7 +1774,7 @@
 							['exclude', 'FontConfig'],
 							['exclude', 'SkFontMgr_custom'],
 						],
-						
+
 						'defines':
 						[
 							# Ensure we get the complete Windows Imaging Components headers
@@ -1806,11 +1807,11 @@
                             'src/ports/SkImageEncoder_none.cpp',
                             'src/ports/SkImageGenerator_none.cpp',
                             'src/ports/SkTLS_none.cpp',
-                            
+
                             # Disable un-needed features
                             # (or at least the ones that don't compile!)
                         ],
-                        
+
                         'sources/':
                         [
                             # Don't build FreeType or FontConfig code
@@ -1885,13 +1886,13 @@
 							'src/ports/SkOSFile_none.cpp',
 							'src/ports/SkTLS_none.cpp',
 						],
-                        
+
                         'sources/':
                         [
                             # Don't build FreeType or FontConfig code
                             ['exclude', 'fontconfig'],
                             ['exclude', 'FontConfig'],
-                            ['exclude', 'SkFontMgr_custom_(embedded|empty)'],	
+                            ['exclude', 'SkFontMgr_custom_(embedded|empty)'],
 						],
                     },
                 ],
@@ -1924,7 +1925,7 @@
 							'src/ports/SkOSFile_none.cpp',
 							'src/ports/SkTLS_none.cpp',
 						],
-                        
+
                         'sources/':
                         [
                             ['exclude', 'SkFontMgr_custom'],
@@ -1939,7 +1940,7 @@
                             'SK_BUILD_FOR_ANDROID',
                             'SK_BUILD_FOR_ANDROID_NDK',
 						],
-                        
+
                         # Need to include the cpufeatures module from the Android NDK
 						'variables':
 						{
@@ -1964,7 +1965,7 @@
 							'src/ports/SkOSFile_none.cpp',
 							'src/ports/SkTLS_none.cpp',
 						],
-                        
+
                         'sources/':
                         [
                             # Don't build FreeType or FontConfig code
@@ -1972,7 +1973,7 @@
                             ['exclude', 'FontConfig'],
                             ['exclude', 'SkFontMgr_custom'],
                         ],
-                    },                      
+                    },
                 ],
 			],
 
@@ -2012,7 +2013,7 @@
 					],
 				],
 			},
-			
+
 			'direct_dependent_settings':
 			{
 				'include_dirs':
@@ -2029,7 +2030,7 @@
 					'include/svg',
 					'include/text',
 					'include/utils',
-                    
+
                     # Needed for some legacy methods
                     'src/core',
 					# Needed for directwrite text rendering on Windows
