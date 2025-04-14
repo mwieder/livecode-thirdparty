@@ -30,7 +30,7 @@
 						
 						'include_dirs':
 						[
-#							'include',
+#					#		'include',
 							'src',
 						],
 						
@@ -41,7 +41,6 @@
 							'src/pngdebug.h',
 							'src/pnginfo.h',
 							'src/pnglibconf.h',
-#							'src/pngpriv.h',
 							'src/pngstruct.h',
 							
 							'src/pngpriv.h',
@@ -62,19 +61,12 @@
 							'src/pngwutil.c',
 						],
 						
-#						'direct_dependent_settings':
-#						{
-#							'include_dirs':
-#							[
-#								'include',
-#							],
-#						},
 						
                         'defines':
                         [
-							'PNG_ARM_NEON_OPT=0',
+				'PNG_ARM_NEON_OPT=0',
                         ],
-					},
+				},
 					{
 						'type': 'none',
 					
