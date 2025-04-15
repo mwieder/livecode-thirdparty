@@ -4,6 +4,7 @@ libopenssl/stubs.cpp
 libopenssl/src/sslstubs.cpp
 libcef/include/
 libcef/libcef_dll/
+libzip/src/*.h
 # Compiled source #
 ###################
 _build/
