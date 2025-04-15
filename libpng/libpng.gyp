@@ -3,37 +3,36 @@
 	[
 		'../../common.gypi',
 	],
-	
+
 	'targets':
 	[
 		{
 			'target_name': 'libpng',
-			
+
 			'toolsets': ['host', 'target'],
 
 			'dependencies':
 			[
 				'../libz/libz.gyp:libz',
 			],
-			
+
 			'conditions':
 			[
 				[
 					'use_system_libpng == 0',
 					{
 						'type': 'static_library',
-						
+
 						'variables':
 						{
 							'silence_warnings': 1,
 						},
-						
+
 						'include_dirs':
 						[
-#					#		'include',
 							'src',
 						],
-						
+
 						'sources':
 						[
 							'src/png.h',
@@ -42,8 +41,8 @@
 							'src/pnginfo.h',
 							'src/pnglibconf.h',
 							'src/pngstruct.h',
-							
-							'src/pngpriv.h',
+
+#							'src/pngpriv.h',
 							'src/png.c',
 							'src/pngerror.c',
 							'src/pngget.c',
@@ -60,8 +59,8 @@
 							'src/pngwtran.c',
 							'src/pngwutil.c',
 						],
-						
-						
+
+
                         'defines':
                         [
 				'PNG_ARM_NEON_OPT=0',
@@ -69,7 +68,7 @@
 				},
 					{
 						'type': 'none',
-					
+
 						'link_settings':
 						{
 							'libraries':
