@@ -78,6 +78,7 @@
 #ifndef	_DLPROC_H
 #define	_DLPROC_H
 
+#include <sqltypes.h>
 #include <dlf.h>
 
 #if defined(_MAC) || defined (__cplusplus)
@@ -93,6 +94,8 @@ typedef SQLRETURN (* HPROC) ();
 #ifdef DLDAPI_HP_SHL
 #include <dl.h>
 typedef shl_t HDLL;
+#elif !defined(WIN32)
+typedef void *HDLL;
 #endif
 
 #if defined(_BE)		|| \

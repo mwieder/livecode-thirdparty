@@ -24,7 +24,7 @@
 						
 						'include_dirs':
 						[
-							'include',
+							'src/include',
 							'src',
 							'src/inst',
 							'src/trace',
@@ -37,11 +37,11 @@
 						
 						'sources':
 						[
-							'include/iodbcunix.h',
-							'include/sql.h',
-							'include/sqlext.h',
-							'include/sqltypes.h',
-							'include/sqlucode.h',
+							'src/include/iodbcunix.h',
+							'src/include/sql.h',
+							'src/include/sqlext.h',
+							'src/include/sqltypes.h',
+							'src/include/sqlucode.h',
 							
 							'src/config.h',
 							'src/config.linux.h',
@@ -86,7 +86,7 @@
 							'src/odbc3.c',
 							'src/prepare.c',
 							'src/result.c',
-							'src/inst/dlf.c',
+#							'src/inst/dlf.c',
 							'src/inst/Info.c',
 							'src/inst/inifile.c',
 							'src/inst/iodbc_error.c',

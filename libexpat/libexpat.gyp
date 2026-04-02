@@ -32,7 +32,7 @@
 			[
 				'expat_config.h',
 				'lib/ascii.h',
-				'lib/asiitab.h',
+				'lib/asciitab.h',
 				'lib/expat_external.h',
 				'lib/expat.h',
 				'lib/iasciitab.h',
