@@ -2,9 +2,9 @@
 
 giffix - attempt to fix a truncated GIF
 
-SPDX-License-Identifier: MIT
-
 *****************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-File-Copyright-Txt: (C) Copyright 1989 Gershon Elber
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -17,9 +17,7 @@ SPDX-License-Identifier: MIT
 
 #define PROGRAM_NAME "giffix"
 
-static char *VersionStr = PROGRAM_NAME VERSION_COOKIE
-    "	Gershon Elber,	" __DATE__ ",   " __TIME__ "\n"
-    "(C) Copyright 1989 Gershon Elber.\n";
+static char *VerStr = PROGRAM_NAME VERSION_COOKIE __DATE__ ", " __TIME__ "\n";
 static char *CtrlStr = PROGRAM_NAME " v%- h%- GifFile!*s";
 
 static void QuitGifError(GifFileType *GifFileIn, GifFileType *GifFileOut);
@@ -53,7 +51,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (HelpFlag) {
-		(void)fprintf(stderr, VersionStr, GIFLIB_MAJOR, GIFLIB_MINOR);
+		(void)fprintf(stderr, VerStr, GIFLIB_MAJOR, GIFLIB_MINOR);
 		GAPrintHowTo(CtrlStr);
 		exit(EXIT_SUCCESS);
 	}

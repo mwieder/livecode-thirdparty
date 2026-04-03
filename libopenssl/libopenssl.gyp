@@ -79,7 +79,8 @@
 				'variables':
 				{
 					# Default to using the OpenSSL 1.1.0 API
-					'openssl_api_compat%': '0x10100000L',
+#					'openssl_api_compat%': '0x10100000L',
+					'openssl_api_compat%': '0x30401000L',
 				},
 				
 				'conditions':
@@ -89,7 +90,8 @@
 						{
 							'include_dirs':
 							[
-								'../../prebuilt/unpacked/openssl/<(uniform_arch)-win32-$(PlatformToolset)_static_$(ConfigurationName)/include',
+#								'../../prebuilt/unpacked/openssl/<(uniform_arch)-win32-$(PlatformToolset)_static_$(ConfigurationName)/include',
+								'../../prebuilt/include/openssl',
 							],
 						},
 					],
@@ -98,7 +100,8 @@
 						{
 							'include_dirs':
 							[
-								'../../prebuilt/include',
+#								'../../prebuilt/include',
+								'../../prebuilt/include/openssl',
 							],
 						},
 					],
@@ -245,29 +248,29 @@
 			
 			'dependencies':
 			[
-							'../../prebuilt/libopenssl.gyp:libopenssl',
+					'../../prebuilt/libopenssl.gyp:libopenssl',
 			],
 			
-						'sources':
-						[
-							'../../engine/src/dummy.cpp',
-						],
-			
-						'conditions':
-						[
-							[
-								'OS == "android"',
-								{
-									'product_name': 'RevSecurity',
-									'product_extension': '',
+			'sources':
+			[
+				'../../engine/src/dummy.cpp',
+			],
 
-									'ldflags!':
-									[
-										'-flto',
-									],
-								},
-							],
+			'conditions':
+			[
+				[
+					'OS == "android"',
+					{
+						'product_name': 'RevSecurity',
+						'product_extension': '',
+
+						'ldflags!':
+						[
+							'-flto',
 						],
+					},
+				],
+			],
 			
 			'all_dependent_settings':
 			{

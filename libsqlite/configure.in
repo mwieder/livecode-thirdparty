@@ -1,0 +1,89 @@
+dnl Process this file with autoconf to produce a configure script.
+
+AC_INIT(include/sqlitedataset.h)
+
+top_srcdir=.
+srcdir=$top_srcdir
+
+
+AC_ARG_WITH(sqlite,[  --with-sqlite=<path> root path of SQLite Database Engine],
+	SQLITE_lib_check=$with_sqlite/lib
+SQLITE_inc_check=$with_sqlite/include,
+	[SQLITE_lib_check="/usr/local/lib"
+SQLITE_inc_check="/usr/local/include"])
+	
+AC_MSG_CHECKING([for SQLite library directory])
+SQLITE_libdir=
+for m in $SQLITE_lib_check; do
+    if test -d "$m" && \
+	(test -f "$m/libsqlite3.so" || test -f "$m/libsqlite3.a")
+    then
+	SQLITE_libdir=$m
+	break
+    fi	
+done
+
+if test -z "$SQLITE_libdir"; then
+    AC_MSG_ERROR([Didn't find the SQLite library dir in '$SQLITE_lib_check'])
+fi
+
+case "$SQLITE_libdir" in
+  /* ) ;;
+  * )  AC_MSG_ERROR([The SQLite library directory ($SQLITE_libdir) must be an absolute path.]) ;;
+esac
+
+AC_MSG_RESULT([$SQLITE_libdir])
+
+case "$SQLITE_libdir" in
+  /usr/lib) ;;
+  *) LDFLAGS="$LDFLAGS -L${SQLITE_libdir}" ;;
+esac
+
+AC_MSG_CHECKING([for SQLite include directory])
+SQLITE_incdir=
+for m in $SQLITE_inc_check; do
+        if test -d "$m" && test -f "$m/sqlite3.h"
+        then
+                SQLITE_incdir=$m
+                break
+        fi
+done
+
+if test -z "$SQLITE_incdir"; then
+        AC_MSG_ERROR([Didn't find the SQLite include dir in '$SQLITE_inc_check'])
+fi
+
+case "$SQLITE_incdir" in
+  /* ) ;;
+  * )  AC_MSG_ERROR([The SQLite include directory ($SQLITE_incdir) must be an absolute path.]) ;;
+esac
+
+AC_MSG_RESULT([$SQLITE_incdir])
+
+CPPFLAGS="$CPPFLAGS -I${SQLITE_incdir}"
+
+
+dnl Checks for programs.
+AC_PROG_AWK
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_INSTALL
+
+
+
+dnl Checks for libraries.
+AC_CHECK_LIB(sqlite,sqlite_exec)
+
+
+dnl Checks for header files.
+AC_HEADER_STDC
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl Checks for library functions.
+
+AC_OUTPUT(Makefile)
+

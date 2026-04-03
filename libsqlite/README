@@ -1,0 +1,29 @@
+This directory contains source code to 
+
+    SQLiteDataset: C++ library for SQLite Database Engine(http://www.hwaci.com/sw/sqlite/).
+    It is "client" interface and is convenient to handle few tables simultaneously,
+    for querying, data navigation, records inserting and editing, transactions
+    handling.
+
+To compile the project, first download and compile the SQLite Database Engine (http://www.sqlite.org).
+Then put in work directory file sqlitedataset.v-0.2.0.tar.gz, untar, configure and compile it:
+
+	$>tar xzvf sqlitedataset.v-0.6.0.tar.gz
+	$>cd sqlitedataset
+	$>./configure --with-sqlite=<path-to-sqlite-installation> 
+	$>make
+	
+Login as root and install the library:
+	$su
+	#make install
+	#ldconfig
+	
+Run example dstest programm:
+
+	$>.libs/dstest
+
+Source of examples can be found in src/dstest.cpp
+and in src/transact.cpp
+
+This version of sqlitedataset support the new sqlite3 api and file format. For sqlite v.2 please use earlier 
+versions of sqlitedataset

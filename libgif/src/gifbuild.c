@@ -2,24 +2,24 @@
 
 gifbuild - dump GIF data in a textual format, or undump it to a GIF
 
-SPDX-License-Identifier: MIT
-
 *****************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-File-Copyright-Txt: (C) Copyright 1989 Gershon Elber
 
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <limits.h>
 
 #include "getarg.h"
 #include "gif_lib.h"
 
 #define PROGRAM_NAME "gifbuild"
 
-static char *VersionStr = PROGRAM_NAME VERSION_COOKIE
-    "	Eric Raymond,	" __DATE__ ",   " __TIME__ "\n"
-    "(C) Copyright 1992 Eric Raymond.\n";
+static char *VerStr = PROGRAM_NAME VERSION_COOKIE __DATE__ ", " __TIME__ "\n";
 static char *CtrlStr =
     PROGRAM_NAME " v%- d%- t%-Characters!s h%- GifFile(s)!*s";
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (HelpFlag) {
-		(void)fprintf(stderr, VersionStr, GIFLIB_MAJOR, GIFLIB_MINOR);
+		(void)fprintf(stderr, VerStr, GIFLIB_MAJOR, GIFLIB_MINOR);
 		GAPrintHowTo(CtrlStr);
 		exit(EXIT_SUCCESS);
 	}
@@ -166,11 +166,19 @@ static void Icon2Gif(char *FileName, FILE *txtin, bool GifNoisyPrint,
 
 		if (sscanf(buf, "screen width %d\n", &GifFileOut->SWidth) ==
 		    1) {
+			if (GifFileOut->SWidth <= 0) {
+				PARSE_ERROR("Invalid screen width.");
+				exit(EXIT_FAILURE);
+			}
 			continue;
 		}
 
 		else if (sscanf(buf, "screen height %d\n",
 		                &GifFileOut->SHeight) == 1) {
+			if (GifFileOut->SHeight <= 0) {
+				PARSE_ERROR("Invalid screen height.");
+				exit(EXIT_FAILURE);
+			}
 			continue;
 		}
 
@@ -230,6 +238,11 @@ static void Icon2Gif(char *FileName, FILE *txtin, bool GifNoisyPrint,
 		                &blue, &KeyTable[ColorMapSize]) == 4) {
 			if (ColorMapSize >= 256) {
 				PARSE_ERROR("Too many color entries.");
+				exit(EXIT_FAILURE);
+			}
+			if (ColorMapSize >= PRINTABLES) {
+				PARSE_ERROR("Too many color entries for keyed "
+				            "color map.");
 				exit(EXIT_FAILURE);
 			}
 			ColorMap[ColorMapSize].Red = red;
@@ -587,12 +600,26 @@ static void Icon2Gif(char *FileName, FILE *txtin, bool GifNoisyPrint,
 			static GifPixelType *Raster;
 			int c;
 			bool hex = (strstr(buf, "hex") != NULL);
+			size_t pixel_count;
+
+			if (NewImage->ImageDesc.Width <= 0 ||
+			    NewImage->ImageDesc.Height <= 0 ||
+			    NewImage->ImageDesc.Width >
+			        INT_MAX / NewImage->ImageDesc.Height) {
+				PARSE_ERROR("Invalid image dimensions.");
+				exit(EXIT_FAILURE);
+			}
+
+			pixel_count = (size_t)NewImage->ImageDesc.Width *
+			              (size_t)NewImage->ImageDesc.Height;
+			if (pixel_count > SIZE_MAX / sizeof(GifPixelType)) {
+				PARSE_ERROR("Image dimensions overflow.");
+				exit(EXIT_FAILURE);
+			}
 
 			/* coverity[overflow_sink] */
 			if ((Raster = (GifPixelType *)malloc(
-			         sizeof(GifPixelType) *
-			         NewImage->ImageDesc.Width *
-			         NewImage->ImageDesc.Height)) == NULL) {
+			         sizeof(GifPixelType) * pixel_count)) == NULL) {
 				PARSE_ERROR("Failed to allocate raster block, "
 				            "aborted.");
 				exit(EXIT_FAILURE);
@@ -682,7 +709,10 @@ static void Icon2Gif(char *FileName, FILE *txtin, bool GifNoisyPrint,
 	// LeadingExtensionBlockCount = 0;
 	LeadingExtensionBlocks = NULL;
 
-	EGifSpew(GifFileOut);
+	if (EGifSpew(GifFileOut, &ErrorCode) == GIF_ERROR) {
+		PrintGifError(ErrorCode);
+		exit(EXIT_FAILURE);
+	}
 }
 
 static void VisibleDumpBuffer(GifByteType *buf, int len)
@@ -785,6 +815,7 @@ static void DumpExtensions(GifFileType *GifFileOut, int ExtensionBlockCount,
 static void Gif2Icon(char *FileName, int fdin, int fdout, char NameTable[]) {
 	int ErrorCode, im, i, j, ColorCount = 0;
 	GifFileType *GifFile;
+	size_t name_len = strlen(NameTable);
 
 	if (fdin == -1) {
 		if ((GifFile = DGifOpenFileName(FileName, &ErrorCode)) ==
@@ -821,6 +852,9 @@ static void Gif2Icon(char *FileName, int fdin, int fdout, char NameTable[]) {
 
 		for (i = 0; i < GifFile->SColorMap->ColorCount; i++) {
 			if (GifFile->SColorMap->ColorCount < PRINTABLES) {
+				if ((size_t)i >= name_len) {
+					GIF_EXIT("Name table too short.");
+				}
 				printf("\trgb %03d %03d %03d is %c\n",
 				       GifFile->SColorMap->Colors[i].Red,
 				       GifFile->SColorMap->Colors[i].Green,
@@ -860,6 +894,10 @@ static void Gif2Icon(char *FileName, int fdin, int fdout, char NameTable[]) {
 				for (i = 0;
 				     i < image->ImageDesc.ColorMap->ColorCount;
 				     i++) {
+					if ((size_t)i >= name_len) {
+						GIF_EXIT(
+						    "Name table too short.");
+					}
 					printf(
 					    "\trgb %03d %03d %03d is %c\n",
 					    image->ImageDesc.ColorMap->Colors[i]

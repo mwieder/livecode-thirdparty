@@ -2,9 +2,9 @@
 
 gifinto - save GIF on stdin to file if size over set threshold
 
-SPDX-License-Identifier: MIT
-
 *****************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-File-Copyright-Txt: (C) Copyright 1989 Gershon Elber
 
 #include <ctype.h>
 #include <fcntl.h>
@@ -30,12 +30,43 @@ SPDX-License-Identifier: MIT
 #define DEFAULT_OUT_NAME "GifInto.Gif"
 #define DEFAULT_TMP_NAME "TempInto.XXXXXX"
 
-static char *VersionStr = PROGRAM_NAME VERSION_COOKIE
-    "	Gershon Elber,	" __DATE__ ",   " __TIME__ "\n"
-    "(C) Copyright 1989 Gershon Elber.\n";
+static char *VerStr = PROGRAM_NAME VERSION_COOKIE __DATE__ ", " __TIME__ "\n";
 static char *CtrlStr = PROGRAM_NAME " v%- s%-MinFileSize!d h%- GifFile!*s";
 
 static int MinFileSize = DEFAULT_MIN_FILE_SIZE;
+
+#ifndef _WIN32
+#define IS_PATH_SEP(c) ((c) == '/')
+#else
+#define IS_PATH_SEP(c) ((c) == '/' || (c) == '\\')
+#endif
+
+static bool IsUnsafePath(const char *path) {
+	const unsigned char *p = (const unsigned char *)path;
+
+	if (path == NULL || *path == '\0') {
+		return true;
+	}
+
+	/* Absolute paths or drive-qualified paths are not allowed. */
+	if (IS_PATH_SEP(p[0])) {
+		return true;
+	}
+	if (isalpha(p[0]) && p[1] == ':') {
+		return true;
+	}
+
+	/* Reject any ".." path segment. */
+	for (p = (const unsigned char *)path; *p != '\0'; p++) {
+		if (p[0] == '.' && p[1] == '.' &&
+		    (p == (const unsigned char *)path || IS_PATH_SEP(p[-1])) &&
+		    (p[2] == '\0' || IS_PATH_SEP(p[2]))) {
+			return true;
+		}
+	}
+
+	return false;
+}
 
 #ifdef _WIN32
 #include <errno.h>
@@ -84,7 +115,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (HelpFlag) {
-		(void)fprintf(stderr, VersionStr, GIFLIB_MAJOR, GIFLIB_MINOR);
+		(void)fprintf(stderr, VerStr, GIFLIB_MAJOR, GIFLIB_MINOR);
 		GAPrintHowTo(CtrlStr);
 		exit(EXIT_SUCCESS);
 	}
@@ -107,6 +138,9 @@ int main(int argc, char **argv) {
 	/* predictable names, but it's not worth the effort and risk to fix. */
 	if (*FileName == NULL) {
 		GIF_EXIT("No valid Filename given.");
+	}
+	if (IsUnsafePath(*FileName)) {
+		GIF_EXIT("Unsafe filename (absolute path or traversal).");
 	}
 	if (strlen(*FileName) > STRLEN - 1) {
 		GIF_EXIT("Filename too long.");

@@ -1,0 +1,2 @@
+SliteDatabase::drop() doesn't work properly
+Database files should be removed manually

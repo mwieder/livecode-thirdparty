@@ -2,15 +2,16 @@
 
 getarg.h - Support routines for the giflib utilities
 
-SPDX-License-Identifier: MIT
-
  **************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: Copyright (C) Eric S. Raymond <esr@thyrsus.com>
 
 #ifndef _GETARG_H
 #define _GETARG_H
 
-#include "gif_lib.h"
 #include <stdbool.h>
+
+#include "gif_lib.h"
 
 #define VERSION_COOKIE " Version %d.%d, "
 
@@ -36,10 +37,11 @@ extern void PrintGifError(int ErrorCode);
 /******************************************************************************
  Color table quantization
 ******************************************************************************/
-int GifQuantizeBuffer(unsigned int Width, unsigned int Height,
-                      int *ColorMapSize, GifByteType *RedInput,
-                      GifByteType *GreenInput, GifByteType *BlueInput,
-                      GifByteType *OutputBuffer, GifColorType *OutputColorMap);
+int GifQuantizeBuffer(unsigned int, unsigned int, int *,
+		      const GifByteType *,
+		      const GifByteType *,
+		      const GifByteType *,
+                      GifByteType *, GifColorType *);
 
 /* These used to live in the library header */
 #define GIF_MESSAGE(Msg) fprintf(stderr, "\n%s: %s\n", PROGRAM_NAME, Msg)

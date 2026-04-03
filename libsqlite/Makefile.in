@@ -1,0 +1,103 @@
+#!/usr/make
+#
+
+# The toplevel directory of the source tree.  This is the directory
+# that contains this "Makefile.in" and the "configure.in" script.
+#
+TOP = @srcdir@
+#SQLITEINCLUDE = $(SQLITE_incdir) 
+#SQLITELIB = $(SQLITE_libdir)
+# C Compile and options for use in building executables that 
+# will run on the target platform.  (BCC and TCC are usually the
+# same unless your are cross-compiling.)
+#
+#CC = gcc  -I. -I${TOP}/src -I${SQLITINCLUDE}
+LDFLAGS = @LDFLAGS@
+CPPFLAGS = @CPPFLAGS@
+CC = @CC@ $(CPPFLAGS)
+
+CPPFLAGS += -Iinclude
+
+# Some standard variables and programs
+#
+prefix = @prefix@
+
+INSTALL = /usr/bin/install
+LIBTOOL = /usr/bin/libtool
+LIBS = -lstdc++ -lsqlite3 -lsqlitedataset
+LIBDIRS = -L$(BINDIR) 
+#-L$(SQLITELIB)
+
+
+# You should not have to change anything below this line
+###############################################################################
+
+# Object files for the SQLiteDataset library.
+#
+LIBOBJ = dataset.lo qry_dat.lo sqlitedataset.lo
+
+# All of the source code files.
+#
+SRC = \
+  $(TOP)/src/qry_dat.cpp \
+  $(TOP)/src/dataset.cpp \
+  $(TOP)/src/sqlitedataset.cpp 
+
+# This is the default Makefile target.  The objects listed here
+# are what get build when you type just "make" with no arguments.
+#
+all:	libsqlitedataset.la dstest transact  
+
+# Generate the file "last_change" which contains the date of change
+# of the most recently modified source code file
+#
+last_change:	$(SRC)
+	cat $(SRC) | grep '$$Id: ' | sort +4 | tail -1 \
+          | awk '{print $$5,$$6}' >last_change
+
+libsqlitedataset.la:	$(LIBOBJ)
+	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS)  -o libsqlitedataset.la $(LIBOBJ) \
+	-rpath $(prefix)/lib  -version-info "6:1:6"
+
+# Header files used by all library source files.
+#
+HDR = \
+   $(TOP)/include/qry_dat.h \
+   $(TOP)/include/dataset.h  \
+   $(TOP)/include/sqlitedataset.h 
+
+
+qry_dat.lo:	$(TOP)/src/qry_dat.cpp $(HDR)
+	$(LIBTOOL)  --mode=compile  $(CC) -c $(TOP)/src/qry_dat.cpp
+
+dataset.lo:	$(TOP)/src/dataset.cpp $(HDR)
+	$(LIBTOOL)  --mode=compile   $(CC) -c $(TOP)/src/dataset.cpp
+
+sqlitedataset.lo:	$(TOP)/src/sqlitedataset.cpp $(HDR) 
+	$(LIBTOOL) --mode=compile $(CC)  -c $(TOP)/src/sqlitedataset.cpp \
+
+
+dstest:	libsqlitedataset.la $(TOP)/src/dstest.cpp $(HDR)
+	$(LIBTOOL) --mode=link $(CC) $(LIBDIRS)  $(LIBS) -o dstest $(TOP)/src/dstest.cpp
+
+transact:	libsqlitedataset.la $(TOP)/src/transact.cpp $(HDR)
+	$(LIBTOOL) --mode=link $(CC) $(LIBDIRS)  $(LIBS) -o transact $(TOP)/src/transact.cpp
+
+install:	 libsqlitedataset.la $(TOP)/include/sqlitedataset.h $(TOP)/include/dataset.h $(TOP)/include/qry_dat.h
+	$(LIBTOOL) --mode=install $(INSTALL) libsqlitedataset.la $(prefix)/lib
+	$(INSTALL) -m 0644 $(TOP)/include/sqlitedataset.h $(prefix)/include
+	$(INSTALL) -m 0644 $(TOP)/include/dataset.h $(prefix)/include
+	$(INSTALL) -m 0644 $(TOP)/include/qry_dat.h $(prefix)/include
+
+clean:	
+	rm -f *.lo *.la *.o  libsqlitedataset.la 
+	rm -rf .libs .deps 
+	rm -f dstest
+	rm -f test.db
+	rm -f transact
+	rm -f profile.sqlite
+
+
+distclean:	clean
+	rm -f config.log config.status config.cache
+	rm -f Makefile

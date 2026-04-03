@@ -2,9 +2,9 @@
 
 gifecho - generate a GIF from ASCII text
 
-SPDX-License-Identifier: MIT
-
 *****************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-File-Copyright-Txt: (C) Copyright 1989 Gershon Elber
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -27,9 +27,7 @@ SPDX-License-Identifier: MIT
 #define DEFAULT_COLOR_GREEN 255
 #define DEFAULT_COLOR_BLUE 255
 
-static char *VersionStr = PROGRAM_NAME VERSION_COOKIE
-    "	Gershon Elber,	" __DATE__ ",   " __TIME__ "\n"
-    "(C) Copyright 1989 Gershon Elber.\n";
+static char *VerStr = PROGRAM_NAME VERSION_COOKIE __DATE__ ", " __TIME__ "\n";
 static char *CtrlStr = PROGRAM_NAME
     " v%- s%-ClrMapSize!d f%-FGClr!d c%-R|G|B!d!d!d t%-\"Text\"!s h%-";
 
@@ -67,7 +65,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (HelpFlag) {
-		(void)fprintf(stderr, VersionStr, GIFLIB_MAJOR, GIFLIB_MINOR);
+		(void)fprintf(stderr, VerStr, GIFLIB_MAJOR, GIFLIB_MINOR);
 		GAPrintHowTo(CtrlStr);
 		exit(EXIT_SUCCESS);
 	}
@@ -116,6 +114,9 @@ int main(int argc, char **argv) {
 	for (i = 0; i < GIF_FONT_HEIGHT; i++) {
 		if ((RasterBuffer[i] = (GifRowType)malloc(
 		         sizeof(GifPixelType) * ImageWidth)) == NULL) {
+			while (--i >= 0) {
+				free((char *)RasterBuffer[i]);
+			}
 			GIF_EXIT(
 			    "Failed to allocate memory required, aborted.");
 		}
@@ -181,6 +182,16 @@ int main(int argc, char **argv) {
 		PrintGifError(ErrorCode);
 		exit(EXIT_FAILURE);
 	}
+
+	for (i = 0; i < GIF_FONT_HEIGHT; i++) {
+		free((char *)RasterBuffer[i]);
+	}
+	if (!TextLineFlag) {
+		for (i = 0; i < NumOfLines; i++) {
+			free(TextLines[i]);
+		}
+	}
+	GifFreeMapObject(ColorMap);
 
 	return 0;
 }

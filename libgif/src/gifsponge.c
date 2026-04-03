@@ -16,9 +16,9 @@ copy an image from a much more (or much *less*) memory-limited system; your
 compression may use more (or fewer) bits.  The uncompressed rasters should,
 however, be identical (you can check this with gifbuild -d).
 
-SPDX-License-Identifier: MIT
-
 ****************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: Copyright (C) Eric S. Raymond <esr@thyrsus.com>
 
 #include <fcntl.h>
 #include <stdio.h>
@@ -76,8 +76,8 @@ int main(int argc, char **argv) {
 	 * data; it's *your* responsibility to keep your changes consistent.
 	 * Caveat hacker!
 	 */
-	if (EGifSpew(GifFileOut) == GIF_ERROR) {
-		PrintGifError(GifFileOut->Error);
+	if (EGifSpew(GifFileOut, &ErrorCode) == GIF_ERROR) {
+		PrintGifError(ErrorCode);
 	}
 
 	if (DGifCloseFile(GifFileIn, &ErrorCode) == GIF_ERROR) {

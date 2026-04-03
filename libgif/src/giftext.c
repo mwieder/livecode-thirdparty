@@ -2,9 +2,9 @@
 
 giftext - dump GIF pixels and metadata as text
 
-SPDX-License-Identifier: MIT
-
 *****************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-File-Copyright-Txt: (C) Copyright 1989 Gershon Elber
 
 #include <ctype.h>
 #include <fcntl.h>
@@ -23,9 +23,7 @@ SPDX-License-Identifier: MIT
 
 #define MAKE_PRINTABLE(c) (isprint(c) ? (c) : ' ')
 
-static char *VersionStr = PROGRAM_NAME VERSION_COOKIE
-    "	Gershon Elber,	" __DATE__ ",   " __TIME__ "\n"
-    "(C) Copyright 1989 Gershon Elber.\n";
+static char *VerStr = PROGRAM_NAME VERSION_COOKIE __DATE__ ", " __TIME__ "\n";
 static char *CtrlStr = PROGRAM_NAME " v%- c%- e%- z%- p%- r%- h%- GifFile!*s";
 
 static void PrintCodeBlock(GifFileType *GifFile, GifByteType *CodeBlock,
@@ -64,7 +62,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (HelpFlag) {
-		(void)fprintf(stderr, VersionStr, GIFLIB_MAJOR, GIFLIB_MINOR);
+		(void)fprintf(stderr, VerStr, GIFLIB_MAJOR, GIFLIB_MINOR);
 		GAPrintHowTo(CtrlStr);
 		exit(EXIT_SUCCESS);
 	}
@@ -111,7 +109,7 @@ int main(int argc, char **argv) {
 			printf("\tSort Flag: %s\n",
 			       GifFile->SColorMap->SortFlag ? "on" : "off");
 			for (i = 0; i < Len; i += 4) {
-				for (j = 0; j < 4 && j < Len; j++) {
+				for (j = 0; j < 4 && i + j < Len; j++) {
 					printf("%3d: %02xh %02xh %02xh   ",
 					       i + j,
 					       GifFile->SColorMap->Colors[i + j]
@@ -440,9 +438,9 @@ static void PrintExtBlock(GifByteType *Extension, bool Reset) {
 		int i, Len;
 		Len = Extension[0];
 		for (i = 1; i <= Len; i++) {
-			(void)snprintf(&HexForm[CrntPlace * 3], 3, " %02x",
+			(void)snprintf(&HexForm[CrntPlace * 3], 4, " %02x",
 			               Extension[i]);
-			(void)snprintf(&AsciiForm[CrntPlace], 3, "%c",
+			(void)snprintf(&AsciiForm[CrntPlace], 2, "%c",
 			               MAKE_PRINTABLE(Extension[i]));
 			if (++CrntPlace == 16) {
 				HexForm[CrntPlace * 3] = 0;
@@ -486,9 +484,9 @@ static void PrintPixelBlock(GifByteType *PixelBlock, int Len, bool Reset) {
 	}
 
 	for (i = 0; i < Len; i++) {
-		(void)snprintf(&HexForm[CrntPlace * 3], 3, " %02x",
+		(void)snprintf(&HexForm[CrntPlace * 3], 4, " %02x",
 		               PixelBlock[i]);
-		(void)snprintf(&AsciiForm[CrntPlace], 3, "%c",
+		(void)snprintf(&AsciiForm[CrntPlace], 2, "%c",
 		               MAKE_PRINTABLE(PixelBlock[i]));
 		if (++CrntPlace == 16) {
 			HexForm[CrntPlace * 3] = 0;

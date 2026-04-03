@@ -2,8 +2,6 @@
 
 gif2rgb - convert GIF to 24-bit RGB pixel triples or vice-versa
 
-SPDX-License-Identifier: MIT
-
 *****************************************************************************/
 
 /***************************************************************************
@@ -21,6 +19,8 @@ Plenty of hackers do that; our job is to supply stable library capability
 with our utilities mainly interesting as test tools.
 
 ***************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-File-Copyright-Txt: (C) Copyright 1989 Gershon Elber
 
 #include <ctype.h>
 #include <fcntl.h>
@@ -39,9 +39,7 @@ with our utilities mainly interesting as test tools.
 
 #define PROGRAM_NAME "gif2rgb"
 
-static char *VersionStr = PROGRAM_NAME VERSION_COOKIE
-    "	Gershon Elber,	" __DATE__ ",   " __TIME__ "\n"
-    "(C) Copyright 1989 Gershon Elber.\n";
+static char *VerStr = PROGRAM_NAME VERSION_COOKIE __DATE__ ", " __TIME__ "\n";
 static char *CtrlStr = PROGRAM_NAME
     " v%- c%-#Colors!d s%-Width|Height!d!d 1%- o%-OutFileName!s h%- GifFile!*s";
 
@@ -225,6 +223,11 @@ static void RGB2GIF(bool OneFileFlag, int NumFiles, char *FileName,
 	if (GifQuantizeBuffer(Width, Height, &ColorMapSize, RedBuffer,
 	                      GreenBuffer, BlueBuffer, OutputBuffer,
 	                      OutputColorMap->Colors) == GIF_ERROR) {
+		free((char *)RedBuffer);
+		free((char *)GreenBuffer);
+		free((char *)BlueBuffer);
+		free((char *)OutputBuffer);
+		GifFreeMapObject(OutputColorMap);
 		exit(EXIT_FAILURE);
 	}
 	free((char *)RedBuffer);
@@ -232,6 +235,8 @@ static void RGB2GIF(bool OneFileFlag, int NumFiles, char *FileName,
 	free((char *)BlueBuffer);
 
 	SaveGif(OutputBuffer, Width, Height, ExpNumOfColors, OutputColorMap);
+	free((char *)OutputBuffer);
+	GifFreeMapObject(OutputColorMap);
 }
 
 /******************************************************************************
@@ -256,11 +261,8 @@ static void DumpScreen2RGB(char *FileName, int OneFileFlag,
 			char OneFileName[80];
 
 			for (i = 0; i < 3; i++) {
-				strncpy(OneFileName, FileName,
-				        sizeof(OneFileName) - 1);
-				strncat(OneFileName, Postfixes[i],
-				        sizeof(OneFileName) - 1 -
-				            strlen(OneFileName));
+				snprintf(OneFileName, sizeof(OneFileName),
+				         "%s%s", FileName, Postfixes[i]);
 
 				if ((rgbfp[i] = fopen(OneFileName, "wb")) ==
 				    NULL) {
@@ -329,6 +331,11 @@ static void DumpScreen2RGB(char *FileName, int OneFileFlag,
 			GifRow = ScreenBuffer[i];
 			GifQprintf("\b\b\b\b%-4d", ScreenHeight - i);
 			for (j = 0; j < ScreenWidth; j++) {
+				/* Check if color is within color palete */
+				if (GifRow[j] >= ColorMap->ColorCount) {
+					GIF_EXIT(GifErrorString(
+					    D_GIF_ERR_IMAGE_DEFECT));
+				}
 				ColorMapEntry = &ColorMap->Colors[GifRow[j]];
 				Buffers[0][j] = ColorMapEntry->Red;
 				Buffers[1][j] = ColorMapEntry->Green;
@@ -517,6 +524,9 @@ static void GIF2RGB(int NumFiles, char *FileName, bool OneFileFlag,
 	DumpScreen2RGB(OutFileName, OneFileFlag, ColorMap, ScreenBuffer,
 	               GifFile->SWidth, GifFile->SHeight);
 
+	for (i = 0; i < GifFile->SHeight; i++) {
+		(void)free(ScreenBuffer[i]);
+	}
 	(void)free(ScreenBuffer);
 
 	{
@@ -554,7 +564,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (HelpFlag) {
-		(void)fprintf(stderr, VersionStr, GIFLIB_MAJOR, GIFLIB_MINOR);
+		(void)fprintf(stderr, VerStr, GIFLIB_MAJOR, GIFLIB_MINOR);
 		GAPrintHowTo(CtrlStr);
 		exit(EXIT_SUCCESS);
 	}

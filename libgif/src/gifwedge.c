@@ -2,9 +2,9 @@
 
 gifwedge - create a GIF test pattern
 
-SPDX-License-Identifier: MIT
-
 *****************************************************************************/
+// SPDX-License-Identifier: MIT
+// SPDX-File-Copyright-Txt: (C) Copyright 1989 Gershon Elber
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -22,9 +22,7 @@ SPDX-License-Identifier: MIT
 
 #define DEFAULT_NUM_LEVELS 16 /* Number of colors to gen the image. */
 
-static char *VersionStr = PROGRAM_NAME VERSION_COOKIE
-    "	Gershon Elber,	" __DATE__ ",   " __TIME__ "\n"
-    "(C) Copyright 1989 Gershon Elber.\n";
+static char *VerStr = PROGRAM_NAME VERSION_COOKIE __DATE__ ", " __TIME__ "\n";
 static char *CtrlStr = PROGRAM_NAME " v%- l%-#Lvls!d s%-Width|Height!d!d h%-";
 
 static int NumLevels = DEFAULT_NUM_LEVELS, ImageWidth = DEFAULT_WIDTH,
@@ -37,8 +35,8 @@ int main(int argc, char **argv) {
 	int i, j, l, c, LevelStep, LogNumLevels, ErrorCode, Count = 0;
 	bool Error, LevelsFlag = false, SizeFlag = false, HelpFlag = false,
 	            GifNoisyPrint = false;
-	GifRowType Line;
-	ColorMapObject *ColorMap;
+	GifRowType Line = NULL;
+	ColorMapObject *ColorMap = NULL;
 	GifFileType *GifFile;
 
 	if ((Error = GAGetArgs(argc, argv, CtrlStr, &GifNoisyPrint, &LevelsFlag,
@@ -50,7 +48,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (HelpFlag) {
-		(void)fprintf(stderr, VersionStr, GIFLIB_MAJOR, GIFLIB_MINOR);
+		(void)fprintf(stderr, VerStr, GIFLIB_MAJOR, GIFLIB_MINOR);
 		GAPrintHowTo(CtrlStr);
 		exit(EXIT_SUCCESS);
 	}
@@ -106,6 +104,7 @@ int main(int argc, char **argv) {
 	                      ColorMap) == GIF_ERROR) {
 		PrintGifError(GifFile->Error);
 	}
+	GifFreeMapObject(ColorMap);
 
 	/* Dump out the image descriptor: */
 	if (EGifPutImageDesc(GifFile, 0, 0, ImageWidth, ImageHeight, false,
@@ -142,6 +141,7 @@ int main(int argc, char **argv) {
 		}
 	}
 
+	free((char *)Line);
 	if (EGifCloseFile(GifFile, &ErrorCode) == GIF_ERROR) {
 		PrintGifError(ErrorCode);
 		exit(EXIT_FAILURE);
