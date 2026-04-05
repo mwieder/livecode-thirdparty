@@ -76,6 +76,13 @@
 			'src/x86/win32.S',
 		],
 
+		# Apple Silicon (arm64) macOS — same ABI as darwin_ios arm64
+		'libffi_mac_arm64_source_files':
+		[
+			'git_master/darwin_ios/src/aarch64/ffi_arm64.c',
+			'git_master/darwin_ios/src/aarch64/sysv_arm64.S',
+		],
+		
 		'libffi_ios_source_files':
 		[
 			'git_master/darwin_ios/src/aarch64/ffi_arm64.c',
@@ -131,6 +138,12 @@
 			'src/arm/ffi.c',
 			'src/arm/sysv.S',
 			'src/arm/trampoline.S',
+		],
+
+		'libffi_linux_arm64_source_files':
+		[
+			'src/aarch64/ffi.c',
+			'src/aarch64/sysv.S',
 		],
 
 		'libffi_linux_armv6hf_source_files':
@@ -217,7 +230,7 @@
 			'conditions':
 			[
 				[
-					'toolset_os == "mac"',
+					'toolset_os == "mac" and toolset_arch != "arm64"',
 					{
 						'platform_include_dirs':
 						[
@@ -228,6 +241,29 @@
 						[
 							'<@(libffi_mac_source_files)',
 							'<@(libffi_generic_sources)'
+						],
+					},
+				],
+				[
+					'toolset_os == "mac" and toolset_arch == "arm64"',
+					{
+						'platform_include_dirs':
+						[
+							'<@(libffi_public_headers_darwin_osx_dir)',
+						],
+
+						'sources':
+						[
+							'<@(libffi_mac_arm64_source_files)',
+							'<@(libffi_generic_sources)',
+						],
+
+						'include_dirs':
+						[
+							'git_master/src',
+							'git_master/src/aarch64',
+							'git_master/darwin_common/include',
+							'git_master/darwin_ios/src/aarch64',
 						],
 					},
 				],
